@@ -2,6 +2,7 @@ package com.example.mezuntakip.service;
 
 
 import com.example.mezuntakip.dtos.request.LoginRequestDTO;
+import com.example.mezuntakip.dtos.request.UserDTO;
 import com.example.mezuntakip.dtos.response.LoginResponseDTO;
 import com.example.mezuntakip.exceptions.InvalidCredentialsException;
 import com.example.mezuntakip.exceptions.UniqueViolationException;
@@ -15,6 +16,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @NoArgsConstructor
@@ -70,5 +74,21 @@ public class UserService {
         String token = this.jwtUtils.generateToken(user);
 
         return new LoginResponseDTO(user.getEmail(), token);
+    }
+
+    public List <UserDTO> getAllUsers () {
+        List<User> userList = userRepository.findAll ();
+        List <UserDTO> userDtoList = new ArrayList<>();
+
+        for (User user : userList) {
+
+                userDtoList.add ( UserDTO.builder()
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
+                        .graduteYear(user.getGraduteYear())
+                        .company(user.getCompany())
+                        .build());
+        }
+        return userDtoList;
     }
 }

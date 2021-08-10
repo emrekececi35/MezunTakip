@@ -18,7 +18,8 @@ public class UserMapper {
                 userRequestDTO.getGraduteYear(),
                 userRequestDTO.getPassword(),
                 userRequestDTO.getEmail(),
-                Role.toEnum(userRequestDTO.getRole())
+                Role.toEnum(userRequestDTO.getRole()),
+                userRequestDTO.getCompany()
         );
     }
 

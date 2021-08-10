@@ -32,16 +32,19 @@ public class User implements UserDetails {
 
     private String email;
 
+    private  String company;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User(String firstName, String lastName, String graduteYear, String password, String email, Role role) {
+    public User(String firstName, String lastName, String graduteYear, String password, String email, Role role,String company) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.graduteYear = graduteYear;
         this.password = password;
         this.email = email;
         this.role = role;
+        this.company=company;
     }
 
 
