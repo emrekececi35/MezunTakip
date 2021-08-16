@@ -83,6 +83,7 @@ public class UserService {
         for (User user : userList) {
 
                 userDtoList.add ( UserDTO.builder()
+                        .id(user.getId())
                         .firstName(user.getFirstName())
                         .lastName(user.getLastName())
                         .graduteYear(user.getGraduteYear())
