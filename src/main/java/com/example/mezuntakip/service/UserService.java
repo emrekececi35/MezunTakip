@@ -1,6 +1,7 @@
 package com.example.mezuntakip.service;
 
 
+import com.example.mezuntakip.dtos.mapper.UserDtoConvert;
 import com.example.mezuntakip.dtos.request.LoginRequestDTO;
 import com.example.mezuntakip.dtos.request.UserDTO;
 import com.example.mezuntakip.dtos.response.LoginResponseDTO;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @NoArgsConstructor
@@ -28,18 +30,20 @@ public class UserService {
     private AuthenticationManager authenticationManager;
     private BCryptPasswordEncoder encoder;
     private JWTUtils jwtUtils;
+    private  UserDtoConvert userDtoConvert;
 
     @Autowired
     public UserService(
             UserRepository userRepository,
             AuthenticationManager authenticationManager,
             BCryptPasswordEncoder encoder,
-            JWTUtils jwtUtils
-    ) {
+            JWTUtils jwtUtils,
+            UserDtoConvert userDtoConvert) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.encoder = encoder;
         this.jwtUtils = jwtUtils;
+        this.userDtoConvert = userDtoConvert;
     }
 
     public LoginResponseDTO login(LoginRequestDTO login) {
@@ -82,13 +86,29 @@ public class UserService {
 
         for (User user : userList) {
 
-                userDtoList.add ( UserDTO.builder()
-                        .id(user.getId())
-                        .firstName(user.getFirstName())
-                        .lastName(user.getLastName())
-                        .graduteYear(user.getGraduteYear())
-                        .company(user.getCompany())
-                        .build());
+            userDtoList.add (userDtoConvert.convert (user));
+        }
+        return userDtoList;
+    }
+
+    public List <UserDTO> findFirstNameAndLastName(String FirstName, String LastName) {
+        List<User> userList = userRepository.findByFirstNameAndAndLastName (FirstName, LastName);
+        List <UserDTO> userDtoList = new ArrayList<>();
+
+        for (User user : userList) {
+
+            userDtoList.add (userDtoConvert.convert (user));
+        }
+        return userDtoList;
+    }
+
+    public List <UserDTO> findGraduteYear(String GraduteYear) {
+        List<User> userList = userRepository.findByGraduteYear (GraduteYear);
+        List <UserDTO> userDtoList = new ArrayList<>();
+
+        for (User user : userList) {
+
+            userDtoList.add (userDtoConvert.convert (user));
         }
         return userDtoList;
     }
